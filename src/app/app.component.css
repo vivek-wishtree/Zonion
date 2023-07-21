@@ -1,0 +1,16 @@
+/* styles.css or styles.scss */
+.toast-top-right {
+    top: 10px;
+    right: 10px;
+  }
+  
+  .toast-success {
+    background-color: #4CAF50; /* Green */
+    color: #fff;
+  }
+  
+  .toast-error {
+    background-color: #f44336; /* Red */
+    color: #fff;
+  }
+  

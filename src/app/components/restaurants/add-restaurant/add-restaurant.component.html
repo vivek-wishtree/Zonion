@@ -1,0 +1,66 @@
+<div class="container my-5">
+    <h1 class="mb-3" style="color: black;">Add New Restaurant</h1>
+
+    <div class="row">
+        <div class="col-6">
+            <form #form="ngForm" (ngSubmit)="addRestaurant(form)">
+
+                <div class="mb-3">
+                    <label for="name" class="form-label">Restaurant Name</label>
+                    <input type="text" class="form-control" required id="name" name="name"
+                        [(ngModel)]="addRestaurantRequest.name">
+                    <div
+                        *ngIf="form.controls['name'].invalid && (form.controls['name'].dirty || form.controls['name'].touched)">
+                        <small class="text-danger" *ngIf="form.controls['name'].errors?.['required']">Restaurant Name is
+                            required.</small>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="phoneNumber" class="form-label">Restaurant Phone Number</label>
+                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
+                        [(ngModel)]="addRestaurantRequest.phone" required pattern="^[789]\d{9}$">
+                    <div *ngIf="form.controls['phoneNumber'].invalid && (form.controls['phoneNumber'].dirty || form.controls['phoneNumber'].touched)">
+                        <small class="text-danger" *ngIf="form.controls['phoneNumber'].errors?.['required']">Phone Number is required.</small>
+                        <small class="text-danger" *ngIf="form.controls['phoneNumber'].errors?.['pattern']">Invalid Phone Number. Phone Number should be 10 digits and start with 7, 8, or 9.</small>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="address" class="form-label">Restaurant Address</label>
+                    <input type="text" class="form-control" required id="address" name="address"
+                        [(ngModel)]="addRestaurantRequest.address">
+
+                    <div
+                        *ngIf="form.controls['address'].invalid && (form.controls['address'].dirty || form.controls['address'].touched)">
+                        <small class="text-danger" *ngIf="form.controls['address'].errors?.['required']">Restaurant Address is
+                            required.</small>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="open" class="form-label">Open Time : </label><br>
+                    <input [ngxTimepicker]="picker" name="openTime" matInput id="open"
+                        [(ngModel)]="addRestaurantRequest.openTime" required="">
+
+                    <ngx-material-timepicker #picker></ngx-material-timepicker>
+                </div>
+
+                <div class="mb-3">
+                    <label for="close" class="form-label">Close Time : </label><br>
+                    <input [ngxTimepicker]="picker1" name="closeTime" matInput id="open"
+                        [(ngModel)]="addRestaurantRequest.closingTime" required="">
+                    <ngx-material-timepicker #picker1></ngx-material-timepicker>
+                </div>
+                <div class="mb-3">
+                    <label for="menuImage" class="form-label">Upload Menu Image</label>
+                    <input type="file" class="form-control" id="menuImage" name="menuImage"
+                        (change)="onFileSelected($event)" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Add</button>
+
+            </form>
+        </div>
+    </div>
+</div>
