@@ -7,24 +7,23 @@
 
                 <div class="mb-3">
                     <label for="name" class="form-label">Restaurant Name</label>
-                    <input type="text" class="form-control" required id="name" name="name"
-                        [(ngModel)]="addRestaurantRequest.name">
-                    <div
-                        *ngIf="form.controls['name'].invalid && (form.controls['name'].dirty || form.controls['name'].touched)">
-                        <small class="text-danger" *ngIf="form.controls['name'].errors?.['required']">Restaurant Name is
-                            required.</small>
+                    <input type="text" class="form-control" required maxlength="128" id="name" name="name"
+                        [(ngModel)]="addRestaurantRequest.name"  (blur)="removeTrailingSpaces()" (keydown)="Space($event)">
+                    <div *ngIf="form.controls['name'].invalid && (form.controls['name'].dirty || form.controls['name'].touched)">
+                        <small class="text-danger" *ngIf="form.controls['name'].errors?.['required']">Restaurant Name is required.</small>
+                        <small class="text-danger" *ngIf="form.controls['name'].errors?.['maxlength']">Restaurant Name must be at most 128 characters.</small>
                     </div>
                 </div>
-
                 <div class="mb-3">
                     <label for="phoneNumber" class="form-label">Restaurant Phone Number</label>
                     <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
                         [(ngModel)]="addRestaurantRequest.phone" required pattern="^[789]\d{9}$">
-                    <div *ngIf="form.controls['phoneNumber'].invalid && (form.controls['phoneNumber'].dirty || form.controls['phoneNumber'].touched)">
+                    <div *ngIf="form.controls['phoneNumber'].invalid && (form.controls['phoneNumber'].dirty && form.controls['phoneNumber'].touched)">
                         <small class="text-danger" *ngIf="form.controls['phoneNumber'].errors?.['required']">Phone Number is required.</small>
                         <small class="text-danger" *ngIf="form.controls['phoneNumber'].errors?.['pattern']">Invalid Phone Number. Phone Number should be 10 digits and start with 7, 8, or 9.</small>
                     </div>
                 </div>
+                
 
                 <div class="mb-3">
                     <label for="address" class="form-label">Restaurant Address</label>
@@ -33,23 +32,23 @@
 
                     <div
                         *ngIf="form.controls['address'].invalid && (form.controls['address'].dirty || form.controls['address'].touched)">
-                        <small class="text-danger" *ngIf="form.controls['address'].errors?.['required']">Restaurant Address is
+                        <small class="text-danger" *ngIf="form.controls['address'].errors?.['required']" maxlength="512">Restaurant Address is
                             required.</small>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="open" class="form-label">Open Time : </label><br>
+                    <label for="open" class="form-label">Opening Time : </label><br>
                     <input [ngxTimepicker]="picker" name="openTime" matInput id="open"
-                        [(ngModel)]="addRestaurantRequest.openTime" required="">
+                        [(ngModel)]="addRestaurantRequest.openTime" required>
 
                     <ngx-material-timepicker #picker></ngx-material-timepicker>
                 </div>
 
                 <div class="mb-3">
-                    <label for="close" class="form-label">Close Time : </label><br>
-                    <input [ngxTimepicker]="picker1" name="closeTime" matInput id="open"
-                        [(ngModel)]="addRestaurantRequest.closingTime" required="">
+                    <label for="close" class="form-label">Closing Time : </label><br>
+                    <input [ngxTimepicker]="picker1" name="closeTime" matInput id="close"
+                        [(ngModel)]="addRestaurantRequest.closingTime" required>
                     <ngx-material-timepicker #picker1></ngx-material-timepicker>
                 </div>
                 <div class="mb-3">

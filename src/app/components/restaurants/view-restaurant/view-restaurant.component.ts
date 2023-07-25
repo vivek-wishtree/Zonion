@@ -12,15 +12,19 @@ import { RestaurantsService } from 'src/app/services/restaurants.service';
 })
 export class ViewRestaurantComponent {
 
+
   restaurantDetails:Restaurant = {
     name: '',
     phone: '',
     address: '',
     openTime: '',
     closingTime: '',
-    isActive: false,
     restaurantId: 0,
-    menuImageUrl: ''
+    isActive: false,
+    lastUpdatedTime: '',
+    menuImageUrl: '',
+
+
   };
   
 

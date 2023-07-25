@@ -1,7 +1,7 @@
 <div class="container my-5">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1 class="mb-0" style="color: black;">Restaurants</h1>
-        <a class="btn btn-primary" [routerLink]="['/restaurants', 'add']">Add Restaurants</a>
+        <a *ngIf="isAdmin" class="btn btn-primary" [routerLink]="['/restaurants', 'add']">Add Restaurants</a>
     </div>
     <table class="table table-striped table-bordered" *ngIf="restaurants">
         <thead style="background-color: #007bff; color: white;">
@@ -12,6 +12,8 @@
                 <th style="width: 20%;">Address</th>
                 <th style="width: 5%;">Opened</th>
                 <th style="width: 20%;">Actions</th>
+                <th style="width: 15%;" *ngIf="isAdmin">Last Updated</th> <!-- Show only for admins -->
+
             </tr>
         </thead>
         <tbody>
@@ -32,11 +34,14 @@
                         </div>
                     </ng-template>
                 </td> 
+
                 <td style="text-align: center;">
                     <a class="btn btn-primary custom-btn" [routerLink]="['/restaurants', 'view', restaurant.restaurantId]">View</a>
-                    <a class="btn btn-success custom-btn" [routerLink]="['/restaurants', 'edit', restaurant.restaurantId]">Edit</a>
-                    <a class="btn btn-danger" (click)="deleteRestaurant(restaurant.restaurantId)">Delete</a>
-                </td>                 
+                    <a *ngIf="isAdmin" class="btn btn-success custom-btn" [routerLink]="['/restaurants', 'edit', restaurant.restaurantId]">Edit</a>
+                    <a *ngIf="isAdmin" class="btn btn-danger" (click)="deleteRestaurant(restaurant.restaurantId)">Delete</a>
+                </td> 
+                <td *ngIf="isAdmin">{{ restaurant.lastUpdatedTime | date:'medium' }}</td> <!-- Show only for admins -->
+                
             </tr>
         </tbody>
     </table>

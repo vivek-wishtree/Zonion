@@ -4,15 +4,19 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RestaurantListComponent } from './components/restaurants/restaurant-list/restaurant-list.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { AddRestaurantComponent } from './components/restaurants/add-restaurant/add-restaurant.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EditRestaurantComponent } from './components/restaurants/edit-restaurant/edit-restaurant.component';
 
-import { ToastrModule, ToastrService, ToastrConfig } from 'ngx-toastr';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { ViewRestaurantComponent } from './components/restaurants/view-restaurant/view-restaurant.component';
+
+import { MatIconModule } from '@angular/material/icon';
+import { LoginComponent } from './components/login/login.component';
+import { SignupComponent } from './components/signup/signup.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +24,12 @@ import { ViewRestaurantComponent } from './components/restaurants/view-restauran
     RestaurantListComponent,
     AddRestaurantComponent,
     EditRestaurantComponent,
-    ViewRestaurantComponent
+    ViewRestaurantComponent,
+    LoginComponent,
+    SignupComponent,
+    
+
+    
   ],
   imports: [
     BrowserModule,
@@ -30,6 +39,10 @@ import { ViewRestaurantComponent } from './components/restaurants/view-restauran
     NgxMaterialTimepickerModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    ReactiveFormsModule,
+    FormsModule,
+    MatIconModule
+   
 
   ],
   providers: [],

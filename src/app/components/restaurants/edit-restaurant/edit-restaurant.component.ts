@@ -12,21 +12,24 @@ import { RestaurantsService } from 'src/app/services/restaurants.service';
 })
 export class EditRestaurantComponent implements OnInit{
 
-  restaurantDetails:Restaurant = {
-    name: '',
-    phone: '',
-    address: '',
-    openTime: '',
-    closingTime: '',
-    isActive: false,
-    restaurantId: 0,
-    menuImageUrl: ''
-  }
+    restaurantDetails:Restaurant = {
+      name: '',
+      phone: '',
+      address: '',
+      openTime: '',
+      closingTime: '',
+      restaurantId: 0,
+      isActive: false,
+      lastUpdatedTime: '',
+      menuImageUrl: '',
+      createdById: 0,
+    };
 
   constructor( private toastr: ToastrService ,private route: ActivatedRoute, private restaurantService: RestaurantsService, private router: Router) {
     
   }
   ngOnInit(): void {
+    
     this.route.paramMap.subscribe({
       next:(params) => {
         const id = params.get('id');
@@ -37,8 +40,9 @@ export class EditRestaurantComponent implements OnInit{
           .subscribe({
   
             next:(response) =>{
-              console.log(response);
+              // console.log(response);
               this.restaurantDetails = response;
+
             }
           });
         }
@@ -46,24 +50,36 @@ export class EditRestaurantComponent implements OnInit{
     })
   }
 
+  Space(event : any){
+    if(event.target.selectionStart === 0 && event.code === "Space"){
+      event.preventDefault();
+    }
+  }
 
-  updateRestaurant(){
+  removeTrailingSpaces(): void {
+    if (this.restaurantDetails.name) {
+      this.restaurantDetails.name = this.restaurantDetails.name.trim();
+    }
+  }
+
+
+  update(){
     this.restaurantService.updateRestaurant(this.restaurantDetails.restaurantId, this.restaurantDetails).subscribe({
       next: (restaurant) => {
+        console.log(restaurant);
         this.toastr.success('Restaurant Edited Successfully!', 'Success');
         this.router.navigate(['restaurants']);
-        console.log(restaurant);
       },
       error: (error) => {
         this.toastr.error('Failed to update restaurant. Please try again.', 'Error');
         this.router.navigate(['restaurants']);
-        console.error('Error updating restaurant:', error);
+        console.log('Error updating restaurant:', error);
       }
     });
   }
   
   public createImgPath = (serverPath: string) => { 
-    console.log(environment.baseApiUrl + serverPath);
+    // console.log(environment.baseApiUrl + serverPath);
     return environment.baseApiUrl + serverPath; 
   }
 

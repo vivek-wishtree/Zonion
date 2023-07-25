@@ -1,10 +1,16 @@
-export interface Restaurant{
-    restaurantId:number;
-    name:string;
-    phone:string;
-    address:string;
-    menuImageUrl:string;
-    openTime:string;
-    closingTime:string;
-    isActive:boolean;
+
+export interface Restaurant {
+    restaurantId: number;
+    name: string;
+    phone: string;
+    address: string;
+    menuImageUrl: string;
+    openTime: string;
+    closingTime: string;
+    isActive: boolean;
+    lastUpdatedTime: string;
+    updatedById?: number;
+    createdById?: number;
+    deletedById?: number;
+
 }
