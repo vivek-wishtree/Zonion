@@ -20,7 +20,6 @@ export class EditRestaurantComponent implements OnInit{
       closingTime: '',
       restaurantId: 0,
       isActive: false,
-      lastUpdatedTime: '',
       menuImageUrl: '',
       createdById: 0,
     };
@@ -64,6 +63,8 @@ export class EditRestaurantComponent implements OnInit{
 
 
   update(){
+    console.log(this.restaurantDetails);
+    
     this.restaurantService.updateRestaurant(this.restaurantDetails.restaurantId, this.restaurantDetails).subscribe({
       next: (restaurant) => {
         console.log(restaurant);

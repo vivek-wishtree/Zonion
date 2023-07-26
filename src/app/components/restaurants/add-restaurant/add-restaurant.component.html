@@ -40,7 +40,8 @@
                 <div class="mb-3">
                     <label for="open" class="form-label">Opening Time : </label><br>
                     <input [ngxTimepicker]="picker" name="openTime" matInput id="open"
-                        [(ngModel)]="addRestaurantRequest.openTime" required>
+                    [format]="24"
+                    [(ngModel)]="addRestaurantRequest.openTime" required>
 
                     <ngx-material-timepicker #picker></ngx-material-timepicker>
                 </div>
@@ -48,6 +49,7 @@
                 <div class="mb-3">
                     <label for="close" class="form-label">Closing Time : </label><br>
                     <input [ngxTimepicker]="picker1" name="closeTime" matInput id="close"
+                    [format]="24"
                         [(ngModel)]="addRestaurantRequest.closingTime" required>
                     <ngx-material-timepicker #picker1></ngx-material-timepicker>
                 </div>

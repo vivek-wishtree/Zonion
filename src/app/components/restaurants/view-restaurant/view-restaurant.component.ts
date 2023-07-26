@@ -21,7 +21,6 @@ export class ViewRestaurantComponent {
     closingTime: '',
     restaurantId: 0,
     isActive: false,
-    lastUpdatedTime: '',
     menuImageUrl: '',
 
 

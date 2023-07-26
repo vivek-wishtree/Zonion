@@ -23,11 +23,12 @@ export class AddRestaurantComponent implements OnInit
       openTime: '',
       closingTime: '',
       restaurantId: 0,
-      isActive: false,
-      lastUpdatedTime: '',
       menuImageUrl: '',
       createdById: 0,
-  
+      isActive: false,
+      createdBy:null,
+      updatedBy:null,
+      deletedBy:null
     };
 
 
@@ -82,9 +83,11 @@ export class AddRestaurantComponent implements OnInit
       return;
     }
     this.addRestaurantRequest.isActive = true;
+    console.log(this.addRestaurantRequest);
+    
     this.restaurantService.addRestaurant(this.addRestaurantRequest).subscribe({
       next: (restaurant) => {
-        // console.log(restaurant);
+        console.log(restaurant);
         this.toastr.success('Restaurant added successfully!', 'Success');
         this.router.navigate(['restaurants']);
         // console.log(restaurant);

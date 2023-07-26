@@ -35,6 +35,7 @@ export class AppComponent {
     // Clear the token from local storage
     this.userService.logout();
 
+
     // Clear user details from memory
     this.userDetail = undefined;
 

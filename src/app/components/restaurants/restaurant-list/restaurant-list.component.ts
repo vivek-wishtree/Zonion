@@ -53,23 +53,21 @@ export class RestaurantListComponent implements OnInit {
       (restaurants: Restaurant[]) => {
         // Get the current time
         const currentTime = new Date().toLocaleTimeString();
+        console.log(currentTime);
+
         console.log(this.restaurants);
 
         // Filter open restaurants based on the opening and closing times
         this.restaurants = restaurants.filter(
           (restaurant: Restaurant) => {
+            console.log(restaurant.openTime);
             // Restaurant model has properties "openTime" and "closingTime"
             const openTime = new Date(`01/01/2000 ${restaurant.openTime}`).toLocaleTimeString();
             const closingTime = new Date(`01/01/2000 ${restaurant.closingTime}`).toLocaleTimeString();
-            const currentTimeDate = new Date(`01/01/2000 ${currentTime}`).toLocaleTimeString();
-
-            console.log("a " + typeof (openTime) + " " + typeof (closingTime) + " " + typeof (currentTime));
-
-            return (restaurant.isActive && currentTimeDate >= openTime && currentTimeDate < closingTime);
+            return (currentTime < closingTime && openTime >= currentTime && restaurant.isActive);
           }
         );
         console.log("Filtered Restaurants:", this.restaurants);
-
       },
       (error) => {
         // Handle error if any

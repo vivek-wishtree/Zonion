@@ -2,15 +2,17 @@
 export interface Restaurant {
     restaurantId: number;
     name: string;
-    phone: string;
     address: string;
-    menuImageUrl: string;
+    phone: string;
     openTime: string;
     closingTime: string;
-    isActive: boolean;
-    lastUpdatedTime: string;
+    menuImageUrl: string;
+    lastUpdatedTime?: Date;
     updatedById?: number;
     createdById?: number;
     deletedById?: number;
-
+    createdBy?:any;
+    updatedBy?:any;
+    deletedBy?:any;
+    isActive: boolean;
 }
