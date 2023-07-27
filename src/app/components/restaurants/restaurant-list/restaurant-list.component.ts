@@ -1,8 +1,8 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Route, Router } from '@angular/router';
+import {  Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Restaurant } from 'src/app/models/restaurant.model';
-import { AuthService } from 'src/app/services/auth.service';
 import { RestaurantsService } from 'src/app/services/restaurants.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -14,19 +14,28 @@ import { UserService } from 'src/app/services/user.service';
 export class RestaurantListComponent implements OnInit {
 
   restaurants: Restaurant[] = [];
+  pageSize: number = 4;
+  pagedRestaurants: Restaurant[] = [];
+  p: number = 1; // Initial page number
+
+
   isAdmin: boolean = false;
-  constructor(private restaurantService: RestaurantsService, private toastr: ToastrService, private router: Router, private userService: UserService) { }
+  itemsPerPage = 4;
+
+  constructor(
+    private restaurantService: RestaurantsService,
+    private toastr: ToastrService,
+    private router: Router,
+    private userService: UserService,
+    private datePipe: DatePipe
+  ) { }
+
 
   ngOnInit(): void {
     this.userService.getUserInfo().subscribe(
       (userInfo) => {
-        if (userInfo && userInfo.role === 'Admin') {
-          this.isAdmin = true;
-          this.fetchAllRestaurants();
-        } else {
-          console.log("Else method called");
-          this.fetchOpenRestaurants();
-        }
+        this.isAdmin = userInfo && userInfo.role === 'Admin';
+        this.fetchRestaurants();
       },
       (error) => {
         console.log('Error fetching user info:', error);
@@ -34,7 +43,15 @@ export class RestaurantListComponent implements OnInit {
     );
   }
 
-  fetchAllRestaurants() {
+  fetchRestaurants() 
+  {
+    // Fetch the restaurants based on user role
+    const fetchFn = this.isAdmin ? this.fetchAllRestaurants : this.fetchOpenRestaurants;
+    fetchFn.call(this);
+  }
+
+  fetchAllRestaurants()
+  {
     this.restaurantService.getAllRestaurants().subscribe(
 
       (restaurants: Restaurant[]) => {
@@ -48,23 +65,39 @@ export class RestaurantListComponent implements OnInit {
     );
   }
 
+  formatTimeToISO(date: any) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
+
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+  }
+
+
   fetchOpenRestaurants() {
     this.restaurantService.getAllRestaurants().subscribe(
       (restaurants: Restaurant[]) => {
         // Get the current time
-        const currentTime = new Date().toLocaleTimeString();
-        console.log(currentTime);
 
-        console.log(this.restaurants);
-
-        // Filter open restaurants based on the opening and closing times
         this.restaurants = restaurants.filter(
           (restaurant: Restaurant) => {
-            console.log(restaurant.openTime);
-            // Restaurant model has properties "openTime" and "closingTime"
-            const openTime = new Date(`01/01/2000 ${restaurant.openTime}`).toLocaleTimeString();
-            const closingTime = new Date(`01/01/2000 ${restaurant.closingTime}`).toLocaleTimeString();
-            return (currentTime < closingTime && openTime >= currentTime && restaurant.isActive);
+            var currentTime = new Date();
+            console.log("IST : " + currentTime);
+            var formattedTime = this.formatTimeToISO(currentTime);
+            console.log(formattedTime);
+            var timePart = formattedTime.split("T")[1];
+            console.log(timePart);
+
+            const OpentimePart = restaurant.openTime.toString().split("T")[1];
+            const closingTimePart = restaurant.closingTime.toString().split("T")[1];
+            console.log(OpentimePart + " " + closingTimePart + " " + timePart);
+            console.log(OpentimePart <= timePart);
+            console.log(closingTimePart > timePart);
+
+            return (restaurant.isActive && OpentimePart <= timePart && closingTimePart > timePart);
           }
         );
         console.log("Filtered Restaurants:", this.restaurants);
@@ -103,5 +136,30 @@ export class RestaurantListComponent implements OnInit {
       });
     }
   }
+
+  restaurantOpenCheck(restaurant: any) {
+
+    var currentTime = new Date();
+    console.log("IST : " + currentTime);
+    var formattedTime = this.formatTimeToISO(currentTime);
+    console.log(formattedTime);
+    var timePart = formattedTime.split("T")[1];
+    console.log(timePart);
+
+    const OpentimePart = restaurant.openTime.toString().split("T")[1];
+    const closingTimePart = restaurant.closingTime.toString().split("T")[1];
+    console.log(OpentimePart + " " + closingTimePart + " " + timePart);
+    console.log(OpentimePart <= timePart);
+    console.log(closingTimePart > timePart);
+
+    return (restaurant.isActive && OpentimePart <= timePart && closingTimePart > timePart);
+  }
+
+ 
+  formatTime(time: Date): string {
+    return this.datePipe.transform(time, 'hh:mm:ss a	') || ''; // Return formatted time or an empty string if time is not defined
+  }
+
+  
 
 }

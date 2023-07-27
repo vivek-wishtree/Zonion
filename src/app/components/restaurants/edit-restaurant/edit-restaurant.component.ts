@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -16,15 +17,15 @@ export class EditRestaurantComponent implements OnInit{
       name: '',
       phone: '',
       address: '',
-      openTime: '',
-      closingTime: '',
       restaurantId: 0,
       isActive: false,
       menuImageUrl: '',
       createdById: 0,
+      openTime: new Date(),
+      closingTime: new Date()
     };
 
-  constructor( private toastr: ToastrService ,private route: ActivatedRoute, private restaurantService: RestaurantsService, private router: Router) {
+  constructor( private toastr: ToastrService ,private route: ActivatedRoute, private restaurantService: RestaurantsService, private router: Router, private datePipe : DatePipe) {
     
   }
   ngOnInit(): void {
@@ -41,7 +42,6 @@ export class EditRestaurantComponent implements OnInit{
             next:(response) =>{
               // console.log(response);
               this.restaurantDetails = response;
-
             }
           });
         }
@@ -64,6 +64,8 @@ export class EditRestaurantComponent implements OnInit{
 
   update(){
     console.log(this.restaurantDetails);
+    this.restaurantDetails.openTime = (new Date(`01/01/2000 ${this.restaurantDetails.openTime}`));
+    this.restaurantDetails.closingTime = (new Date(`01/01/2000 ${this.restaurantDetails.closingTime}`));
     
     this.restaurantService.updateRestaurant(this.restaurantDetails.restaurantId, this.restaurantDetails).subscribe({
       next: (restaurant) => {
@@ -77,6 +79,15 @@ export class EditRestaurantComponent implements OnInit{
         console.log('Error updating restaurant:', error);
       }
     });
+  }
+  formatTime(time: Date): string {
+    console.log("Called " + time);
+    var temp =  this.datePipe.transform(time, 'HH:mm');
+    console.log(temp);
+    
+    console.log(typeof(temp));
+    
+    return temp ? temp : '';
   }
   
   public createImgPath = (serverPath: string) => { 

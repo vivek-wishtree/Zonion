@@ -4,8 +4,8 @@ export interface Restaurant {
     name: string;
     address: string;
     phone: string;
-    openTime: string;
-    closingTime: string;
+    openTime: Date;
+    closingTime: Date;
     menuImageUrl: string;
     lastUpdatedTime?: Date;
     updatedById?: number;

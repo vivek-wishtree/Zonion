@@ -11,18 +11,31 @@
                 <th style="width: 15%;">Phone Number</th>
                 <th style="width: 20%;">Address</th>
                 <th style="width: 5%;">Opened</th>
+                <!-- <th style="width: 5%;" *ngIf="isAdmin">Operating</th> Show only for admins -->
                 <th style="width: 20%;">Actions</th>
                 <th style="width: 15%;" *ngIf="isAdmin">Last Updated</th> <!-- Show only for admins -->
-
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let restaurant of restaurants let i = index">
+            <tr *ngFor="let restaurant of restaurants | paginate: { itemsPerPage: 4, currentPage: p }; let i = index">
                 <td>{{i + 1}}</td>
                 <td>{{restaurant.name}}</td>
                 <td>{{restaurant.phone}}</td>
                 <td>{{restaurant.address}}</td>
                 <td class="w-2" style="text-align: center; font-size: x-large;">
+                    <ng-container *ngIf="restaurantOpenCheck(restaurant); else notOpen">
+                        <div style="color: green;">
+                            &#9679;
+                        </div>
+                    </ng-container>
+                    <ng-template #notOpen>
+                        <div style="color: red;">
+                            &#9679;
+                        </div>
+                    </ng-template>
+                </td> 
+
+                <!-- <td class="w-2" *ngIf="isAdmin" style="text-align: center; font-size: x-large; ">
                     <ng-container *ngIf="restaurant.isActive; else notActive">
                         <div style="color: green;">
                             &#9679;
@@ -33,8 +46,8 @@
                             &#9679;
                         </div>
                     </ng-template>
-                </td> 
-
+                </td> -->
+             
                 <td style="text-align: center;">
                     <a class="btn btn-primary custom-btn" [routerLink]="['/restaurants', 'view', restaurant.restaurantId]">View</a>
                     <a *ngIf="isAdmin" class="btn btn-success custom-btn" [routerLink]="['/restaurants', 'edit', restaurant.restaurantId]">Edit</a>
@@ -45,5 +58,7 @@
             </tr>
         </tbody>
     </table>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
     <p *ngIf="!restaurants">No one is there</p>
 </div>

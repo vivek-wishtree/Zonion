@@ -1,4 +1,3 @@
-
 <div class="container my-3">
     <div class="card">
         <div class="card-header heading">
@@ -28,15 +27,13 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="open" class="form-label">Open Time:</label><br>
-                            <p>{{restaurantDetails.openTime}}</p>
-
-
+                            <label for="open" class="form-label">Opening Time:</label><br>
+                            <p>{{ formattedOpenTime }}</p>
                         </div>
 
                         <div class="mb-3">
-                            <label for="close" class="form-label">Close Time:</label><br>
-                            <p>{{restaurantDetails.closingTime}}</p>
+                            <label for="close" class="form-label">Closing Time:</label><br>
+                            <p>{{ formattedClosingTime }}</p>
                         </div>
                         
                         <button type="submit" class="btn btn-primary mr-5">Done</button>
@@ -45,13 +42,13 @@
                 </div>
                 <!-- Want a horizontal line of height of this whole container -->
                 <div class="col-md-6">
-                   
-                        <h6>
+
+                    <h6>
                         Menu Image
                     </h6>
-                       
+
                     <img [src]="createImgPath(restaurantDetails.menuImageUrl)" alt="Menu Image" class="img-fluid"
-                            style="height: 400px;margin-left: 10px;">
+                        style="height: 400px;margin-left: 10px;">
 
                 </div>
             </div>

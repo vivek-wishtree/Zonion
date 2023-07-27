@@ -15,22 +15,20 @@ import { UserService } from 'src/app/services/user.service';
 export class AddRestaurantComponent implements OnInit 
 {
 
-
     addRestaurantRequest:Restaurant = {
       name: '',
       phone: '',
       address: '',
-      openTime: '',
-      closingTime: '',
       restaurantId: 0,
       menuImageUrl: '',
       createdById: 0,
       isActive: false,
-      createdBy:null,
-      updatedBy:null,
-      deletedBy:null
+      createdBy: null,
+      updatedBy: null,
+      deletedBy: null,
+      openTime: new Date(),
+      closingTime: new Date()
     };
-
 
   constructor(
     private restaurantService: RestaurantsService,
@@ -83,8 +81,15 @@ export class AddRestaurantComponent implements OnInit
       return;
     }
     this.addRestaurantRequest.isActive = true;
-    console.log(this.addRestaurantRequest);
+    this.addRestaurantRequest.openTime = (new Date(`01/01/2000 ${this.addRestaurantRequest.openTime}`));
+    this.addRestaurantRequest.closingTime = (new Date(`01/01/2000 ${this.addRestaurantRequest.closingTime}`));
     
+    const currentDate = new Date();
+    // console.log(currentDate);
+    
+    // Set the time to the input time, while keeping the current date
+
+   
     this.restaurantService.addRestaurant(this.addRestaurantRequest).subscribe({
       next: (restaurant) => {
         console.log(restaurant);
@@ -117,4 +122,5 @@ export class AddRestaurantComponent implements OnInit
       );
     }
   }
+  
 }

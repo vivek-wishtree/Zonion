@@ -13,10 +13,14 @@ import { EditRestaurantComponent } from './components/restaurants/edit-restauran
 
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { ViewRestaurantComponent } from './components/restaurants/view-restaurant/view-restaurant.component';
+import { MatTableModule } from '@angular/material/table'; // Import MatTableModule
 
 import { MatIconModule } from '@angular/material/icon';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
+import { DatePipe } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 
 @NgModule({
   declarations: [
@@ -27,8 +31,6 @@ import { SignupComponent } from './components/signup/signup.component';
     ViewRestaurantComponent,
     LoginComponent,
     SignupComponent,
-    
-
     
   ],
   imports: [
@@ -41,11 +43,12 @@ import { SignupComponent } from './components/signup/signup.component';
     ToastrModule.forRoot(),
     ReactiveFormsModule,
     FormsModule,
-    MatIconModule
-   
-
+    MatIconModule,
+    MatTableModule,
+    NgxPaginationModule
+    
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
