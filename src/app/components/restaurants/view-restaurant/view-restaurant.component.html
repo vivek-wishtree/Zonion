@@ -23,17 +23,16 @@
                         <div class="mb-3">
                             <label for="address" class="form-label">Restaurant Address</label>
                             <p>{{restaurantDetails.address}}</p>
-
                         </div>
 
                         <div class="mb-3">
                             <label for="open" class="form-label">Opening Time:</label><br>
-                            <p>{{ formattedOpenTime }}</p>
+                            <p>{{restaurantDetails.openTime  + 'Z' | date:'shortTime' }}</p>
                         </div>
 
                         <div class="mb-3">
                             <label for="close" class="form-label">Closing Time:</label><br>
-                            <p>{{ formattedClosingTime }}</p>
+                            <p>{{restaurantDetails.closingTime  + 'Z' | date:'shortTime' }}</p>
                         </div>
                         
                         <button type="submit" class="btn btn-primary mr-5">Done</button>

@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -15,6 +16,7 @@ import { UserService } from 'src/app/services/user.service';
 export class AddRestaurantComponent implements OnInit 
 {
 
+    
     addRestaurantRequest:Restaurant = {
       name: '',
       phone: '',
@@ -26,8 +28,8 @@ export class AddRestaurantComponent implements OnInit
       createdBy: null,
       updatedBy: null,
       deletedBy: null,
-      openTime: new Date(),
-      closingTime: new Date()
+      openTime: '',
+      closingTime: ''
     };
 
   constructor(
@@ -76,23 +78,35 @@ export class AddRestaurantComponent implements OnInit
     }
   }
 
-  addRestaurant(form: NgForm) {
+  addRestaurant(form: NgForm) 
+  {
     if (form.invalid) {
       return;
     }
+
     this.addRestaurantRequest.isActive = true;
+    console.log("Add called");
+    // this.addRestaurantRequest.openTime = this.addRestaurantRequest.openTime.toLocaleString();
+    // this.addRestaurantRequest.closingTime = this.addRestaurantRequest.closingTime.toLocaleString();
+    console.log("Before conversion : "+this.addRestaurantRequest.openTime);
+    console.log(this.addRestaurantRequest.closingTime);
+
     this.addRestaurantRequest.openTime = (new Date(`01/01/2000 ${this.addRestaurantRequest.openTime}`));
     this.addRestaurantRequest.closingTime = (new Date(`01/01/2000 ${this.addRestaurantRequest.closingTime}`));
+
+    console.log(this.addRestaurantRequest.openTime);
+    console.log(this.addRestaurantRequest.closingTime);
+
     
-    const currentDate = new Date();
-    // console.log(currentDate);
     
-    // Set the time to the input time, while keeping the current date
 
    
     this.restaurantService.addRestaurant(this.addRestaurantRequest).subscribe({
       next: (restaurant) => {
-        console.log(restaurant);
+        console.log("Inside Service..");
+        
+        console.log(restaurant.openTime);
+        console.log(restaurant.closingTime);
         this.toastr.success('Restaurant added successfully!', 'Success');
         this.router.navigate(['restaurants']);
         // console.log(restaurant);

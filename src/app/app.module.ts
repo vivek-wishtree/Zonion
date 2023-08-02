@@ -45,7 +45,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     FormsModule,
     MatIconModule,
     MatTableModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    
     
   ],
   providers: [DatePipe],

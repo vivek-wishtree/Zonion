@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import {  Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Restaurant } from 'src/app/models/restaurant.model';
 import { RestaurantsService } from 'src/app/services/restaurants.service';
@@ -43,21 +43,18 @@ export class RestaurantListComponent implements OnInit {
     );
   }
 
-  fetchRestaurants() 
-  {
+  fetchRestaurants() {
     // Fetch the restaurants based on user role
     const fetchFn = this.isAdmin ? this.fetchAllRestaurants : this.fetchOpenRestaurants;
     fetchFn.call(this);
   }
 
-  fetchAllRestaurants()
-  {
+  fetchAllRestaurants() {
     this.restaurantService.getAllRestaurants().subscribe(
 
       (restaurants: Restaurant[]) => {
         this.restaurants = restaurants;
-        console.log(this.restaurants);
-
+         console.log(this.restaurants);
       },
       (error) => {
         console.error('Error fetching restaurants:', error);
@@ -84,20 +81,16 @@ export class RestaurantListComponent implements OnInit {
 
         this.restaurants = restaurants.filter(
           (restaurant: Restaurant) => {
-            var currentTime = new Date();
-            console.log("IST : " + currentTime);
-            var formattedTime = this.formatTimeToISO(currentTime);
-            console.log(formattedTime);
-            var timePart = formattedTime.split("T")[1];
-            console.log(timePart);
+            var currentTime = new Date().toTimeString();
 
-            const OpentimePart = restaurant.openTime.toString().split("T")[1];
-            const closingTimePart = restaurant.closingTime.toString().split("T")[1];
-            console.log(OpentimePart + " " + closingTimePart + " " + timePart);
-            console.log(OpentimePart <= timePart);
-            console.log(closingTimePart > timePart);
+            var open = this.formatTime(restaurant.openTime); 
+            var close = this.formatTime(restaurant.closingTime); 
+            
+            console.log(open + " ----- " + close + " ");
+            //console.log(OpentimePart <= timePart);
+            //console.log(closingTimePart > timePart);
 
-            return (restaurant.isActive && OpentimePart <= timePart && closingTimePart > timePart);
+            return (restaurant.isActive && open <= currentTime && close > currentTime);
           }
         );
         console.log("Filtered Restaurants:", this.restaurants);
@@ -108,6 +101,8 @@ export class RestaurantListComponent implements OnInit {
       }
     );
   }
+
+  
 
 
   reloadCurrentPage() {
@@ -138,28 +133,34 @@ export class RestaurantListComponent implements OnInit {
   }
 
   restaurantOpenCheck(restaurant: any) {
+    var currentTime = new Date().toTimeString();
 
-    var currentTime = new Date();
-    console.log("IST : " + currentTime);
-    var formattedTime = this.formatTimeToISO(currentTime);
-    console.log(formattedTime);
-    var timePart = formattedTime.split("T")[1];
-    console.log(timePart);
+    var open = this.formatTime(restaurant.openTime); 
+    var close = this.formatTime(restaurant.closingTime); 
+    
+    console.log(open + " ----- " + close + " ");
+    //console.log(OpentimePart <= timePart);
+    //console.log(closingTimePart > timePart);
 
-    const OpentimePart = restaurant.openTime.toString().split("T")[1];
-    const closingTimePart = restaurant.closingTime.toString().split("T")[1];
-    console.log(OpentimePart + " " + closingTimePart + " " + timePart);
-    console.log(OpentimePart <= timePart);
-    console.log(closingTimePart > timePart);
-
-    return (restaurant.isActive && OpentimePart <= timePart && closingTimePart > timePart);
+    return (restaurant.isActive && open <= currentTime && close > currentTime);
   }
 
- 
+
   formatTime(time: Date): string {
-    return this.datePipe.transform(time, 'hh:mm:ss a	') || ''; // Return formatted time or an empty string if time is not defined
+ 
+    const isoTimeString = time + 'Z';
+
+    // Convert the ISO string to a Date object
+    const dateObj = new Date(isoTimeString);
+    
+  
+    // Format the Date object to a short time format (e.g., "hh:mm AM/PM")
+    const formattedTime = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false  });
+    
+    return formattedTime;
+    
   }
 
-  
+
 
 }

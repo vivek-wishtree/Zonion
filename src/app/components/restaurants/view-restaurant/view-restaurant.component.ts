@@ -24,8 +24,7 @@ export class ViewRestaurantComponent {
     closingTime: new Date()
   };
 
-  formattedOpenTime: string | undefined;
-  formattedClosingTime: string | undefined;
+
 
 
 
@@ -45,19 +44,8 @@ export class ViewRestaurantComponent {
           //Api call..!
           this.restaurantService.getRestaurant(id)
             .subscribe({
-
               next: (response) => {
-                this.formattedOpenTime = this.formatTime(response.openTime);
-                console.log(this.formattedOpenTime);
-                console.log(" ");
-
-                this.formattedClosingTime = this.formatTime(response.closingTime);
-                console.log(this.formattedClosingTime);
-                console.log("Inside");
-
                 this.restaurantDetails = response;
-                console.log(response.openTime + " " + response.closingTime);
-
               }
             });
         }
@@ -69,7 +57,6 @@ export class ViewRestaurantComponent {
     return this.datePipe.transform(time, 'HH:mm') || ''; // Return formatted time or an empty string if time is not defined
   }
   public createImgPath = (serverPath: string) => {
-    console.log(environment.baseApiUrl + serverPath);
     return environment.baseApiUrl + serverPath;
   }
 

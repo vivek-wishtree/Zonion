@@ -39,15 +39,17 @@
                     </div>
                 </div>
 
+                <!-- fetch time in default format-->
                 <div class="mb-3">
                     <label for="open" class="form-label">Open Time:</label><br>
-                    <input type="time" id="open" name="open" [(ngModel)]="restaurantDetails.openTime" required  [value]="formatTime(restaurantDetails.openTime)">
+                    <input type="time" id="open" name="open" [(ngModel)]="selectedTimeOpen" required>
                 </div>
-
+                
                 <div class="mb-3">
                     <label for="close" class="form-label">Closing Time:</label><br>
-                    <input type="time" id="close" name="close" [(ngModel)]="restaurantDetails.closingTime" required  [value]="formatTime(restaurantDetails.closingTime)">
+                    <input type="time" id="close" name="close" [(ngModel)]="selectedTimeClose" required>
                 </div>
+                
 
                 <div class="mb-3">
                     <label for="menuImage" class="form-label">Upload Menu Image</label>

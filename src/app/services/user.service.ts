@@ -9,8 +9,8 @@ import { UserInfo } from '../models/user-info';
 })
 export class UserService {
 
-  private apiUrl = environment.baseApiUrl+ 'api/user/userinfo';
-  private accessToken = 'token';
+  private baseUrl = environment.baseApiUrl; // Replace this with the actual base URL of your backend API
+
   constructor(private http: HttpClient) { }
 
   getUserInfo(): Observable<any> {
@@ -19,12 +19,35 @@ export class UserService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${accessToken}`,
     });
-    return this.http.get<UserInfo>(this.apiUrl, { headers });
+    return this.http.get<UserInfo>(this.baseUrl+ 'api/user/userinfo', { headers });
   }
 
-  logout(): void {
-    localStorage.removeItem(this.accessToken);
+  private saveUserInfoToLocal(userDetail: UserInfo) {
+    localStorage.setItem('user_detail', JSON.stringify(userDetail));
+  }
 
+  getUserInfoFromLocal(): UserInfo | null {
+    const userDetailString = localStorage.getItem('user_detail');
+    return userDetailString ? JSON.parse(userDetailString) : null;
+  }
+
+
+ 
+  logout(): Observable<any> {
+    console.log(("logout called"));
+    
+    const accessToken = localStorage.getItem('token');
+    console.log(accessToken);
+    
+    console.log(("Token fetched"));
+
+    // console.log(accessToken);
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${accessToken}`,
+    });
+    console.log(("Upto Return"));
+
+    return this.http.post<any>(this.baseUrl+ 'api/user/logout', { headers });
   }
  
 
